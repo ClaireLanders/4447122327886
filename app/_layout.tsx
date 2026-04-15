@@ -1,24 +1,31 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { createContext, useState } from 'react';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
+export type Habit = {
+  id: number;
+  name: string;
+  category: string;
+  date: string;
+  count: number;
 };
 
+type HabitContextType = {
+  habits: Habit[];
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+};
+
+export const HabitContext = createContext<HabitContextType | null>(null);
+
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [habits, setHabits] = useState<Habit[]>([
+    { id: 1, name: 'Morning Run', category: 'Fitness', date: '2026-04-08', count: 0 },
+    { id: 2, name: 'Meditation', category: 'Mindfulness', date: '2026-04-09', count: 0 },
+    { id: 3, name: 'Read a Book', category: 'Learning', date: '2026-04-10', count: 0 },
+  ]);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <HabitContext.Provider value={{ habits, setHabits }}>
+      <Stack />
+    </HabitContext.Provider>
   );
 }

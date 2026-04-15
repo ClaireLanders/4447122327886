@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
-type TaskCardProps = {
+type HabitCardProps = {
     name: string;
     category: string;
     date: string;
 };
 
-export default function TaskCard({ name, category, date }:
-TaskCardProps) {
+export default function HabitCard({ name, category, date }:
+HabitCardProps) {
     const [count, setCount] = useState(0);
 
     return (

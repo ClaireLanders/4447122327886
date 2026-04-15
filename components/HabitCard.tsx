@@ -1,16 +1,17 @@
-import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
 type HabitCardProps = {
+    id: number;
     name: string;
     category: string;
     date: string;
+    count: number;
+    onUpdate: (id: number, delta: number) => void;
+
 };
 
-export default function HabitCard({ name, category, date }:
+export default function HabitCard({ id, name, category, date, count, onUpdate }:
 HabitCardProps) {
-    const [count, setCount] = useState(0);
-
     return (
     <View style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
         <Text style={{ fontSize: 18 }}>{name}</Text>
@@ -18,8 +19,8 @@ HabitCardProps) {
         <Text>Date: {date}</Text>
 
         <Text style={{marginTop: 10}}>Count: {count}</Text>
-        <Button title="+1" onPress={() => setCount(count + 1)} />
-        <Button title="-1" onPress={() => setCount(count - 1)} />
+        <Button title="+1" onPress={() => onUpdate(id, 1)} />
+        <Button title="-1" onPress={() => onUpdate(id, - 1)} />
 
         <Text>
             {count > 0 && 'Positive'}

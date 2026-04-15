@@ -8,16 +8,18 @@ type HabitCardProps = {
     count: number;
     onUpdate: (id: number, delta: number) => void;
     onRemove: (id: number) => void;
+    onEdit: (id: number) => void;
 
 };
 
-export default function HabitCard({ id, name, category, date, count, onUpdate, onRemove }:
+export default function HabitCard({ id, name, category, date, count, onUpdate, onRemove, onEdit }:
 HabitCardProps) {
     return (
     <View style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
         <Text style={{ fontSize: 18 }}>{name}</Text>
         <Text>Category: {category}</Text>
         <Text>Date: {date}</Text>
+        <Button title="Edit" onPress={() => onEdit(id)} />
 
         <Text style={{marginTop: 10}}>Count: {count}</Text>
         <Button title="+1" onPress={() => onUpdate(id, 1)} />

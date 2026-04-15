@@ -5,5 +5,6 @@ export default {
   dialect: 'sqlite',
   dbCredentials: {
     url: './habits.db',
+
   },
 } satisfies Config;

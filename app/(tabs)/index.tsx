@@ -1,6 +1,6 @@
 import HabitCard from '@/components/HabitCard';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 type Habit ={
   id: number;
@@ -27,16 +27,35 @@ export default function IndexScreen() {
     );
   };
 
+    const removeHabit = (id: number) => {
+      setHabits(prev => prev.filter(habit => habit.id !== id));
+  };
+
+    const resetAll = () => {
+      setHabits(prev =>
+        prev.map(habit => ({ ...habit, count: 0 }))
+    );
+  };
+
+  const total = habits.reduce((sum, h) => sum + h.count, 0);
+
 
 return (
   <View style={{ padding: 20 }}>
-    {habits.map(habit =>(
-      <HabitCard
-      key={habit.id}
-      {...habit}
-      onUpdate={updateCount}
-      /> 
-    ))}
+    <Text style={{ fontSize: 22, marginBottom: 10 }}>Total: {total}</Text>
+    <Button title="Reset All" onPress={resetAll} />
+    {habits.length === 0 ? (
+      <Text>No habits added yet.</Text>
+    ) : (
+      habits.map(habit => (
+        <HabitCard
+          key={habit.id}
+          {...habit}
+          onUpdate={updateCount}
+          onRemove={removeHabit}
+        />
+      ))
+    )}
   </View>
 );
 }

@@ -7,10 +7,11 @@ type HabitCardProps = {
     date: string;
     count: number;
     onUpdate: (id: number, delta: number) => void;
+    onRemove: (id: number) => void;
 
 };
 
-export default function HabitCard({ id, name, category, date, count, onUpdate }:
+export default function HabitCard({ id, name, category, date, count, onUpdate, onRemove }:
 HabitCardProps) {
     return (
     <View style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
@@ -27,6 +28,9 @@ HabitCardProps) {
             {count < 0 && 'Negative'}
             {count === 0 && 'Zero' }
         </Text>
+        <View style={{ marginTop: 5 }}>
+            <Button title="Remove" onPress={() => onRemove(id)} />
+        </View>
     </View>
     );
 }

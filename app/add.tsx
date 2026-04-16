@@ -1,7 +1,9 @@
+import { habits as habitsTable } from '@/db/schema';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import { HabitContext } from './_layout';
+
 
 export default function AddHabit() {
   const router = useRouter();
@@ -9,34 +11,35 @@ export default function AddHabit() {
 
   if (!context) return null;
 
-  const { habits, setHabits } = context;
+  const { setHabits } = context;
 
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [date, setDate] = useState('');
+  const [notes, setNotes] = useState('');
 
-  const saveHabit = () => {
-    const newHabit = {
-      id: Date.now(),
-      name,
-      category,
-      date,
-      count: 0,
+  const saveHabit = async() => {
+    if(!name.trim()) return;
+
+    await db.insert(habitsTable).values({
+        user_id: 1,
+        category_id: 1,
+        // Getting today's date as an ISO string for SQLite text column
+        created_at: new Date().toISOString().split('T')[0],
+        notes: notes || null,
+
+    });
+
+    const rows = await db.select().from(habitsTable);
+    setHabits(rows);
+    router.back();
     };
 
-    setHabits([...habits, newHabit]);
-    router.back();
-  };
+
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput placeholder="Name" value={name} onChangeText={setName}
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-      <TextInput placeholder="Category" value={category} onChangeText={setCategory}
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-      <TextInput placeholder="Date" value={date} onChangeText={setDate}
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-
+      <TextInput placeholder="Habit Name" value={name} onChangeText={setName}/>
+      <TextInput placeholder="Notes (optional)" value={notes} onChangeText={setNotes}/>
+   
       <Button title="Save" onPress={saveHabit} disabled={!name.trim()} />
     </View>
   );

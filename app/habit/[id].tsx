@@ -1,3 +1,6 @@
+import { db } from '@/db/client';
+import { habits as habitsTable } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext } from 'react';
 import { Button, Text, View } from 'react-native';
@@ -15,17 +18,19 @@ export default function HabitDetail() {
   const habit = habits.find((h: Habit) => h.id === Number(id));
   if (!habit) return null;
 
-  const deleteHabit = () => {
-    setHabits(habits.filter(h => h.id !== Number(id)));
+  const deleteHabit = async () => {
+    await db.delete(habitsTable).where(eq(habitsTable.id, Number(id)));
+    const rows = await db.select().from(habitsTable);
+    setHabits(rows);
     router.back();
   };
 
   return (
     <View style={{ padding: 20 }}>
       <Text style={{ fontSize: 22 }}>{habit.name}</Text>
-      <Text>Category: {habit.category}</Text>
-      <Text>Date: {habit.date}</Text>
-      <Text>Count: {habit.count}</Text>
+      <Text>Category ID: {habit.category_id}</Text>
+      <Text>Created: {habit.created_at}</Text>
+      
 
       <Button
         title="Edit"

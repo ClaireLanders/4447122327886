@@ -30,6 +30,7 @@ export default function HabitDetail() {
       <Text style={{ fontSize: 22 }}>{habit.name}</Text>
       <Text>Category ID: {habit.category_id}</Text>
       <Text>Created: {habit.created_at}</Text>
+      {habit.notes && <Text>Notes: {habit.notes}</Text>}
       
 
       <Button

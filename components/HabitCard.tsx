@@ -14,6 +14,8 @@ export default function HabitCard({habit}: Props) {
         <Text style={{ fontSize: 18 }}>{habit.name}</Text>
         <Text>Category: {habit.category_id}</Text>
         <Text>Created: {habit.created_at}</Text>
+        {habit.notes && <Text>Notes: {habit.notes}</Text>}
+
 
         <Button
          title="View"

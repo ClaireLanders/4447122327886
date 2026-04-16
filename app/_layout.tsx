@@ -1,12 +1,18 @@
 import { Stack } from 'expo-router';
 import { createContext, useState } from 'react';
+import { db } from '@/db/client';
+import { habits as habitsTable } from '@/db/schema';
+import { seed } from '@/db/seed';
 
 export type Habit = {
   id: number;
+  user_id: number;
+  category_id: number;
   name: string;
   category: string;
-  date: string;
-  count: number;
+  created_at: string;
+  notes:string;
+
 };
 
 type HabitContextType = {
@@ -17,11 +23,16 @@ type HabitContextType = {
 export const HabitContext = createContext<HabitContextType | null>(null);
 
 export default function RootLayout() {
-  const [habits, setHabits] = useState<Habit[]>([
-    { id: 1, name: 'Morning Run', category: 'Fitness', date: '2026-04-08', count: 0 },
-    { id: 2, name: 'Meditation', category: 'Mindfulness', date: '2026-04-09', count: 0 },
-    { id: 3, name: 'Read a Book', category: 'Learning', date: '2026-04-10', count: 0 },
-  ]);
+  const [habits, setHabits] = useState<Habit[]>([]);
+
+  useEffect(() => {
+    const loadHabits = async () => {
+      await seed();
+      const rows = await db.select().from habitsTable);
+      setHabits(rows);
+    };
+    void loadHabits();
+  }, []);
 
   return (
     <HabitContext.Provider value={{ habits, setHabits }}>

@@ -1,6 +1,6 @@
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import { HabitLogContext } from './_layout';
@@ -8,12 +8,13 @@ import { HabitLogContext } from './_layout';
 export default function AddLog() {
   const router = useRouter();
   const context = useContext(HabitLogContext);
+  const {habitId} = useLocalSearchParams<{ habitId: string }>();
 
   if (!context) return null;
 
   const { setHabitLogs } = context;
 
-  const [habitId, setHabitId] =useState('1');
+  const [selectedHabitId, setSelectedHabitId] =useState(habitId || '1');
   const [count, setCount] = useState('1');
   const [notes, setNotes] = useState('');
 
@@ -32,7 +33,7 @@ export default function AddLog() {
 
   return (
     <View style={{ padding: 20 }}>
-        <TextInput placeholder="Habit ID" value={habitId} onChangeText={setHabitId}
+        <TextInput placeholder="Habit ID" value={selectedHabitId} onChangeText={setSelectedHabitId}
         keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
         <TextInput placeholder="Count" value={count} onChangeText={setCount}
         keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />

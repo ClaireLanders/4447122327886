@@ -23,6 +23,13 @@ export default function HabitCard({habit}: Props) {
             router.push({ pathname: '/habit/[id]', params: {id: habit.id.toString()} })
             }
         />
+
+        <Button
+        title="Log Habit"
+        onPress={() =>
+            router.push({pathname: '/add_log', params: { habitId: habit.id.toString()} })
+        }
+        />
     </View>
     );
 }

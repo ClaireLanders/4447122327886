@@ -19,7 +19,7 @@ export default function CategoriesScreen() {
 
         <Button
           title="Add Category"
-          onPress={() => router.push({ pathname: '../add-category' })}
+          onPress={() => router.push({ pathname: '../add_category' })}
         />
 
         {categories.length === 0 ? (

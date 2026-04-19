@@ -34,9 +34,12 @@ export default function AddCategory() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput placeholder="Category name" value={name} onChangeText={setName}/>
-      <TextInput placeholder="Colour (hex e.g. #4CAF50)" value={colour} onChangeText={setColour} />
-      <TextInput placeholder="Icon name" value={icon} onChangeText={setIcon}/>
+      <TextInput placeholder="Category name" value={name} onChangeText={setName}
+      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
+      <TextInput placeholder="Colour (hex e.g. #4CAF50)" value={colour} onChangeText={setColour}
+      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
+      <TextInput placeholder="Icon name" value={icon} onChangeText={setIcon}
+      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
 
       <Button title="Save" onPress={saveCategory} disabled={!name.trim()} />
     </View>

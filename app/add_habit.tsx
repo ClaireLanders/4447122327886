@@ -39,8 +39,10 @@ export default function AddHabit() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput placeholder="Habit Name" value={name} onChangeText={setName}/>
-      <TextInput placeholder="Notes (optional)" value={notes} onChangeText={setNotes}/>
+      <TextInput placeholder="Habit Name" value={name} onChangeText={setName}
+      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
+      <TextInput placeholder="Notes (optional)" value={notes} onChangeText={setNotes}
+      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
    
       <Button title="Save" onPress={saveHabit} disabled={!name.trim()} />
     </View>

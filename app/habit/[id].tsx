@@ -1,3 +1,4 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habits as habitsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -42,8 +43,8 @@ export default function HabitDetail() {
           })
         }
       />
-      <Button title="Delete" onPress={deleteHabit} />
-      <Button title="Back" onPress={() => router.back()} />
+      <PrimaryButton label="Delete" variant="danger" onPress={deleteHabit} />
+      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()} />
     </View>
   );
 }

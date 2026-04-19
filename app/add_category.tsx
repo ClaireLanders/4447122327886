@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import { CategoryContext } from './_layout';
 
+
 export default function AddCategory() {
   const router = useRouter();
   const context = useContext(CategoryContext);
@@ -41,7 +42,7 @@ export default function AddCategory() {
       <TextInput placeholder="Icon name" value={icon} onChangeText={setIcon}
       style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
 
-      <Button title="Save" onPress={saveCategory} disabled={!name.trim()} />
+      <Button title="Save"  onPress={saveCategory} disabled={!name.trim()} />
     </View>
   );
 }

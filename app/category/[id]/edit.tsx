@@ -1,9 +1,10 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { Category, CategoryContext } from '../../_layout';
 
 export default function EditCategory() {
@@ -38,7 +39,7 @@ export default function EditCategory() {
       <TextInput value={colour} onChangeText={setColour} placeholder="Colour" />
       <TextInput value={icon} onChangeText={setIcon} placeholder="Icon" />
 
-      <Button title="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>
   );
 }

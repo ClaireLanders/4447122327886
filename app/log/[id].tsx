@@ -1,3 +1,4 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -39,8 +40,8 @@ export default function LogDetail() {
           router.push({ pathname: '../log/[id]/edit', params: { id } })
         }
       />
-      <Button title="Delete" onPress={deleteLog} />
-      <Button title="Back" onPress={() => router.back()} />
+      <PrimaryButton label="Delete" variant="danger" onPress={deleteLog} />
+      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()} />
     </View>
   );
 }

@@ -1,9 +1,10 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { targets as targetsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { Target, TargetContext } from '../../_layout';
 
 export default function EditTarget() {
@@ -39,7 +40,7 @@ export default function EditTarget() {
         keyboardType="numeric"
         style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
 
-      <Button title="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>
   );
 }

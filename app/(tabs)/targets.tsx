@@ -1,7 +1,8 @@
 import TargetCard from '@/components/TargetCard';
+import PrimaryButton from '@/components/ui/primary-button';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Target, TargetContext } from '../_layout';
 
@@ -18,8 +19,9 @@ export default function TargetsScreen() {
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         <Text style={{ fontSize: 22, marginBottom: 10 }}>Targets</Text>
 
-        <Button
-          title="Add Target"
+        <PrimaryButton
+          label="Add Target"
+          variant="primary"
           onPress={() => router.push({ pathname: '../add_target' })}
         />
 

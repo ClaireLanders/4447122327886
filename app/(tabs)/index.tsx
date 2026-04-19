@@ -1,7 +1,8 @@
 import HabitCard from '@/components/HabitCard';
+import PrimaryButton from '@/components/ui/primary-button';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Habit, HabitContext } from '../_layout';
 
@@ -19,8 +20,9 @@ export default function IndexScreen() {
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         <Text style={{ fontSize: 22, marginBottom: 10 }}>Habits</Text>
 
-        <Button
-          title="Add Habit"
+        <PrimaryButton
+          label="Add Habit"
+          variant="primary"
           onPress={() => router.push({ pathname: '../add_habit' })}
         />
 

@@ -1,3 +1,4 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { targets as targetsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -79,8 +80,8 @@ export default function TargetDetail() {
           router.push({ pathname: '../target/[id]/edit', params: { id } })
         }
       />
-      <Button title="Delete" onPress={deleteTarget} />
-      <Button title="Back" onPress={() => router.back()} />
+      <PrimaryButton label="Delete" variant="danger" onPress={deleteTarget} />
+      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()} />
     </View>
   );
 }

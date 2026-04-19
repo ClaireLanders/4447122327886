@@ -1,3 +1,4 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -46,8 +47,8 @@ export default function CategoryDetail() {
           })
         }
       />
-      <Button title="Delete" onPress={deleteCategory} />
-      <Button title="Back" onPress={() => router.back()} />
+      <PrimaryButton label="Delete" variant="danger" onPress={deleteCategory} />
+      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()} />
     </View>
   );
 }

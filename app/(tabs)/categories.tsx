@@ -1,7 +1,8 @@
 import CategoryCard from '@/components/CategoryCard';
+import PrimaryButton from '@/components/ui/primary-button';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Category, CategoryContext } from '../_layout';
 
@@ -18,8 +19,9 @@ export default function CategoriesScreen() {
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         <Text style={{ fontSize: 22, marginBottom: 10 }}>Categories</Text>
 
-        <Button
-          title="Add Category"
+        <PrimaryButton
+          label="Add Category"
+          variant="primary"
           onPress={() => router.push({ pathname: '../add_category' })}
         />
 

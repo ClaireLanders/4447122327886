@@ -1,9 +1,10 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habits as habitsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { Habit, HabitContext } from '../../_layout';
 
 export default function EditHabit() {
@@ -38,7 +39,7 @@ export default function EditHabit() {
       <TextInput value={notes} onChangeText={setNotes}/>
 
 
-      <Button title="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>
   );
 }

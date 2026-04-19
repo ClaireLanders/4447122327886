@@ -1,9 +1,10 @@
+import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { HabitLog, HabitLogContext } from '../../_layout';
 
 export default function EditLog() {
@@ -38,7 +39,7 @@ export default function EditLog() {
       <TextInput value={notes} onChangeText={setNotes} placeholder="Notes (optional)"
         style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
 
-      <Button title="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>
   );
 }

@@ -1,10 +1,11 @@
+import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { Category, CategoryContext } from '../../_layout';
 
 export default function EditCategory() {
@@ -35,9 +36,9 @@ export default function EditCategory() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput value={name} onChangeText={setName} placeholder="Name" />
-      <TextInput value={colour} onChangeText={setColour} placeholder="Colour" />
-      <TextInput value={icon} onChangeText={setIcon} placeholder="Icon" />
+      <FormField label="Category Name" value={name} onChangeText={setName} placeholder="Name" />
+      <FormField label="Category Colour" value={colour} onChangeText={setColour} placeholder="Colour" />
+      <FormField label="Category Icon" value={icon} onChangeText={setIcon} placeholder="Icon" />
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>

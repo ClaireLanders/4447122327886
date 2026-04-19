@@ -1,10 +1,11 @@
+import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { HabitLog, HabitLogContext } from '../../_layout';
 
 export default function EditLog() {
@@ -34,10 +35,8 @@ export default function EditLog() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput value={count} onChangeText={setCount} placeholder="Count"
-        keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-      <TextInput value={notes} onChangeText={setNotes} placeholder="Notes (optional)"
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
+      <FormField label="Log Count" value={count} onChangeText={setCount} placeholder="Count" keyboardType="numeric"/>
+      <FormField label="Log Notes" value={notes} onChangeText={setNotes} placeholder="Notes (optional)"/>
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>

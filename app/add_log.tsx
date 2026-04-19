@@ -1,8 +1,9 @@
+import FormField from '@/components/ui/form-field';
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { HabitLogContext } from './_layout';
 
 export default function AddLog() {
@@ -33,12 +34,9 @@ export default function AddLog() {
 
   return (
     <View style={{ padding: 20 }}>
-        <TextInput placeholder="Habit ID" value={selectedHabitId} onChangeText={setSelectedHabitId}
-        keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-        <TextInput placeholder="Count" value={count} onChangeText={setCount}
-        keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-        <TextInput placeholder="Notes (optional)" value={notes} onChangeText={setNotes}
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
+        <FormField label="Habit ID" value={selectedHabitId} onChangeText={setSelectedHabitId} keyboardType="numeric"/>
+        <FormField label="Count" value={count} onChangeText={setCount} keyboardType="numeric"/>
+        <FormField label="Notes (optional)" value={notes} onChangeText={setNotes}/>
 
       <Button title="Log Habit" onPress={saveLog} />
     </View>

@@ -1,8 +1,9 @@
+import FormField from '@/components/ui/form-field';
 import { db } from '@/db/client';
 import { targets as targetsTable } from '@/db/schema';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { TargetContext } from './_layout';
 
 export default function AddTarget() {
@@ -34,12 +35,9 @@ export default function AddTarget() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput placeholder="Habit ID" value={habitId} onChangeText={setHabitId}
-        keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-      <TextInput placeholder="Period (weekly or monthly)" value={period} onChangeText={setPeriod}
-        style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
-      <TextInput placeholder="Goal" value={goal} onChangeText={setGoal}
-        keyboardType="numeric" style={{ borderWidth: 1, marginVertical: 5, padding: 5 }} />
+      <FormField label="Habit ID" value={habitId} onChangeText={setHabitId} keyboardType="numeric" />
+      <FormField label="Period (weekly or monthly)" value={period} onChangeText={setPeriod}/>
+      <FormField label="Goal" value={goal} onChangeText={setGoal} keyboardType="numeric"/>
 
       <Button title="Save Target" onPress={saveTarget} disabled={!goal.trim()} />
     </View>

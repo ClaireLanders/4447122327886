@@ -1,10 +1,10 @@
+import FormField from '@/components/ui/form-field';
 import { db } from '@/db/client';
 import { habits as habitsTable } from '@/db/schema';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { HabitContext } from './_layout';
-
 
 export default function AddHabit() {
   const router = useRouter();
@@ -39,10 +39,8 @@ export default function AddHabit() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput placeholder="Habit Name" value={name} onChangeText={setName}
-      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
-      <TextInput placeholder="Notes (optional)" value={notes} onChangeText={setNotes}
-      style={{ borderWidth: 1, marginVertical: 5, padding: 5 }}/>
+      <FormField label="Habit name" value={name} onChangeText={setName} />
+      <FormField label="Notes (optional)" value={notes} onChangeText={setNotes}/>
    
       <Button title="Save" onPress={saveHabit} disabled={!name.trim()} />
     </View>

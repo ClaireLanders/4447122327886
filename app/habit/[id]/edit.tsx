@@ -1,10 +1,11 @@
+import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { habits as habitsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { Habit, HabitContext } from '../../_layout';
 
 export default function EditHabit() {
@@ -35,8 +36,8 @@ export default function EditHabit() {
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput value={name} onChangeText={setName}/>
-      <TextInput value={notes} onChangeText={setNotes}/>
+      <FormField label="Habit Name" value={name} onChangeText={setName}/>
+      <FormField label="Habit Notes" value={notes} onChangeText={setNotes}/>
 
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />

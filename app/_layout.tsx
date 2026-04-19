@@ -1,5 +1,5 @@
 import { db } from '@/db/client';
-import { categories as categoriesTable, habit_logs as habitLogsTable, habits as habitsTable } from '@/db/schema';
+import { categories as categoriesTable, habit_logs as habitLogsTable, habits as habitsTable, targets as targetsTable } from '@/db/schema';
 import { seed } from '@/db/seed';
 import { Stack } from 'expo-router';
 import { createContext, useEffect, useState } from 'react';
@@ -30,6 +30,14 @@ export type HabitLog = {
   notes: string | null;
 };
 
+export type Target = {
+  id: number;
+  user_id: number;
+  habit_id: number;
+  period: string;
+  goal: number;
+};
+
 type HabitContextType = {
   habits: Habit[];
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
@@ -45,15 +53,21 @@ type HabitLogContextType = {
   setHabitLogs: React.Dispatch<React.SetStateAction<HabitLog[]>>;
 };
 
+type TargetContextType = {
+  targets: Target[];
+  setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
+};
+
 export const HabitContext = createContext<HabitContextType | null>(null);
 export const CategoryContext = createContext<CategoryContextType | null>(null);
 export const HabitLogContext = createContext<HabitLogContextType | null>(null);
-
+export const TargetContext = createContext<TargetContextType | null>(null);
 
 export default function RootLayout() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [habitLogs, setHabitLogs] = useState<HabitLog[]>([]);
+  const [targets, setTargets] = useState<Target[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -61,9 +75,11 @@ export default function RootLayout() {
       const habitRows = await db.select().from (habitsTable);
       const categoryRows = await db.select().from(categoriesTable);
       const habitLogRows = await db.select().from(habitLogsTable);
+      const targetRows = await db.select().from(targetsTable);
       setHabits(habitRows);
       setCategories(categoryRows);
       setHabitLogs(habitLogRows);
+      setTargets(targetRows);
     };
     void loadData();
   }, []);
@@ -72,7 +88,9 @@ export default function RootLayout() {
     <HabitContext.Provider value={{ habits, setHabits }}>
       <CategoryContext.Provider value={{ categories, setCategories}}>
         <HabitLogContext.Provider value={{ habitLogs, setHabitLogs}}>
-          <Stack />
+          <TargetContext.Provider value={{ targets, setTargets }}>
+            <Stack />
+          </TargetContext.Provider>
         </HabitLogContext.Provider>
       </CategoryContext.Provider>
     </HabitContext.Provider>

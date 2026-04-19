@@ -13,27 +13,29 @@ export async function seed() {
   console.log('Seeding database...');
 
   // --- Users ---
-  const insertedUsers = await db.insert(users).values([
+  await db.insert(users).values([
     { username: 'sarah_j', password_hash: '$2b$10$placeholder_hash_sarah', created_at: '2025-03-01T10:00:00Z', fname: 'Sarah', lname: 'Johnson' },
     { username: 'mike_r', password_hash: '$2b$10$placeholder_hash_mike', created_at: '2025-03-05T14:30:00Z', fname: 'Mike', lname: 'Rivera' },
-  ]).returning();
+  ]);
+  const insertedUsers = await db.select().from(users);
 
   const sarahId = insertedUsers[0].id;
   const mikeId = insertedUsers[1].id;
 
   // --- Categories ---
-  const insertedCategories = await db.insert(categories).values([
+  await db.insert(categories).values([
     { user_id: sarahId, name: 'Health', colour: '#4CAF50', icon: 'heart-pulse' },
     { user_id: sarahId, name: 'Fitness', colour: '#FF5722', icon: 'dumbbell' },
     { user_id: sarahId, name: 'Mindfulness', colour: '#9C27B0', icon: 'brain' },
     { user_id: mikeId, name: 'Productivity', colour: '#2196F3', icon: 'rocket' },
     { user_id: mikeId, name: 'Wellness', colour: '#FF9800', icon: 'leaf' },
-  ]).returning();
+  ]);
+  const insertedCategories = await db.select().from(categories);
 
   const [catHealth, catFitness, catMindfulness, catProductivity, catWellness] = insertedCategories;
 
   // --- Habits ---
-  const insertedHabits = await db.insert(habits).values([
+  await db.insert(habits).values([
     { user_id: sarahId, category_id: catHealth.id, name: 'Drink 8 glasses of water', created_at: '2025-03-02T08:00:00Z', notes: 'Stay hydrated throughout the day' },
     { user_id: sarahId, category_id: catHealth.id, name: 'Take vitamins', created_at: '2025-03-02T08:00:00Z', notes: null },
     { user_id: sarahId, category_id: catFitness.id, name: 'Morning run', created_at: '2025-03-03T07:00:00Z', notes: 'At least 3km' },
@@ -42,7 +44,8 @@ export async function seed() {
     { user_id: mikeId, category_id: catProductivity.id, name: 'No phone before 9am', created_at: '2025-03-06T09:00:00Z', notes: null },
     { user_id: mikeId, category_id: catWellness.id, name: 'Sleep by 11pm', created_at: '2025-03-07T20:00:00Z', notes: 'Wind down at 10:30' },
     { user_id: mikeId, category_id: catWellness.id, name: 'Walk 10k steps', created_at: '2025-03-07T08:00:00Z', notes: null },
-  ]).returning();
+  ]);
+  const insertedHabits = await db.select().from(habits);
 
   const [hWater, hVitamins, hRun, hMeditate, hRead, hNoPhone, hSleep, hWalk] = insertedHabits;
 

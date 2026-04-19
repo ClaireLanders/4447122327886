@@ -1,5 +1,6 @@
-import { Habit } from '@/app/_layout';
+import { Category, CategoryContext, Habit } from '@/app/_layout';
 import { useRouter } from 'expo-router';
+import { useContext } from 'react';
 import { Button, Text, View } from 'react-native';
 
 type Props = {
@@ -8,11 +9,15 @@ type Props = {
 
 export default function HabitCard({habit}: Props) {
     const router = useRouter();
+    const categoryContext = useContext(CategoryContext);
+
+    const categoryName = categoryContext?.categories.find(
+        (c: Category) => c.id === habit.category_id)?.name;
 
     return (
     <View style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
         <Text style={{ fontSize: 18 }}>{habit.name}</Text>
-        <Text>Category: {habit.category_id}</Text>
+        <Text>Category: {categoryName}</Text>
         <Text>Created: {habit.created_at}</Text>
         {habit.notes && <Text>Notes: {habit.notes}</Text>}
 

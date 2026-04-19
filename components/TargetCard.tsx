@@ -1,7 +1,7 @@
 import { Habit, HabitContext, HabitLog, HabitLogContext, Target } from '@/app/_layout';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
 type Props = {
   target: Target;
@@ -46,10 +46,27 @@ export default function TargetCard({ target }: Props) {
   const met = progress >= target.goal;
   const percentage = target.goal > 0 ? Math.round((progress / target.goal) * 100) : 0;
 
+  // navigate to target detail screen when card is tapped
+  const openDetails = () =>
+    router.push({ 
+      pathname: '/target/[id]',
+      params: { id: target.id.toString() } 
+    });
+  // summary string for screen reader accessibility
+  const targetSummary = `${habitName} target, ${target.period}, ${percentage}% complete`;
+
 
   return (
-    <View style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
-      <Text style={{ fontSize: 18 }}>Habit: {habitName}</Text>
+    <Pressable
+      accessibilityLabel={`${targetSummary}, view details`}
+      accessibilityRole="button"
+      onPress={openDetails}
+      style={({ pressed }) => [
+        styles.card,
+        pressed ? styles.cardPressed : null,
+      ]}
+    >
+      <Text style={styles.name}>Habit: {habitName}</Text>
       <Text>Period: {target.period}</Text>
       <Text>Goal: {target.goal}</Text>
       <Text>Progress: {progress} / {target.goal} ({percentage}%)</Text>
@@ -60,12 +77,19 @@ export default function TargetCard({ target }: Props) {
         : '${remaining} remaining'}   
        </Text>
 
-      <Button
-        title="View"
-        onPress={() =>
-          router.push({ pathname: '/target/[id]', params: { id: target.id.toString() } })
-        }
-      />
-    </View>
+    </Pressable>
   );
 }
+const styles = StyleSheet.create({
+  card: {
+    marginBottom: 12,
+    padding: 10,
+    borderWidth: 1,
+  },
+  cardPressed: {
+    opacity: 0.88,
+  },
+  name: {
+    fontSize: 18,
+  },
+});

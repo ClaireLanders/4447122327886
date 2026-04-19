@@ -1,6 +1,7 @@
+import CategoryCard from '@/components/CategoryCard';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Button, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Category, CategoryContext } from '../_layout';
 
@@ -26,25 +27,7 @@ export default function CategoriesScreen() {
           <Text style={{ marginTop: 20 }}>No categories yet.</Text>
         ) : (
           categories.map((category: Category) => (
-            <View key={category.id} style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{
-                  width: 20, height: 20, borderRadius: 10,
-                  backgroundColor: category.colour, marginRight: 10
-                }} />
-                <Text style={{ fontSize: 18 }}>{category.name}</Text>
-              </View>
-              <Text>Icon: {category.icon}</Text>
-              <Button
-                title="View"
-                onPress={() =>
-                  router.push({
-                    pathname: '/category/[id]',
-                    params: { id: category.id.toString() }
-                  })
-                }
-              />
-            </View>
+          <CategoryCard key={category.id} category={category} />
           ))
         )}
       </ScrollView>

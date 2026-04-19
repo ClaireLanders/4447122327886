@@ -1,6 +1,7 @@
+import LogCard from '@/components/LogCard';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Button, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { HabitLog, HabitLogContext } from '../_layout';
 
@@ -26,18 +27,7 @@ export default function LogsScreen() {
           <Text style={{ marginTop: 20 }}>No logs yet.</Text>
         ) : (
           habitLogs.map((log: HabitLog) => (
-            <View key={log.id} style={{ marginBottom: 12, padding: 10, borderWidth: 1 }}>
-              <Text style={{ fontSize: 18 }}>Habit ID: {log.habit_id}</Text>
-              <Text>Date: {log.date}</Text>
-              <Text>Count: {log.count}</Text>
-              {log.notes && <Text>Notes: {log.notes}</Text>}
-              <Button
-                title="View"
-                onPress={() =>
-                  router.push({ pathname: '/log/[id]', params: { id: log.id.toString() } })
-                }
-              />
-            </View>
+            <LogCard key={log.id} log={log} />            
           ))
         )}
       </ScrollView>

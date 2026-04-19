@@ -21,7 +21,7 @@ export default function IndexScreen() {
 
         <Button
           title="Add Habit"
-          onPress={() => router.push({ pathname: '../add' })}
+          onPress={() => router.push({ pathname: '../add_habit' })}
         />
 
         {habits.length === 0 ? (

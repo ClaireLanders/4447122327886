@@ -1,3 +1,4 @@
+import { db } from '@/db/client';
 import { habits as habitsTable } from '@/db/schema';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
@@ -22,6 +23,7 @@ export default function AddHabit() {
     await db.insert(habitsTable).values({
         user_id: 1,
         category_id: 1,
+        name,
         // Getting today's date as an ISO string for SQLite text column
         created_at: new Date().toISOString().split('T')[0],
         notes: notes || null,

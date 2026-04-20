@@ -72,9 +72,9 @@ export default function TargetCard({ target }: Props) {
       <Text>Progress: {progress} / {target.goal} ({percentage}%)</Text>
       <Text style={{ color: progress > target.goal ? '#DAA520' : met ? 'green' : 'red' }}>
       { progress > target.goal
-        ? 'Target Exceeded! (+${progress-taget.goal} over)'
-        : met? 'Target met!'
-        : '${remaining} remaining'}   
+        ? `Target Exceeded! (+${progress-target.goal} over)`
+        : met? `Target met!`
+        : `${remaining} remaining`}   
        </Text>
 
     </Pressable>

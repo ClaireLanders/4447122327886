@@ -1,4 +1,5 @@
 import LogCard from '@/components/LogCard';
+import DatePicker from '@/components/ui/date-picker';
 import PrimaryButton from '@/components/ui/primary-button';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
@@ -11,6 +12,13 @@ export default function LogsScreen() {
   const context = useContext(HabitLogContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedHabit, setSelectedHabit] = useState('All');
+  const [startDate, setStartDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 30);
+    return d;
+  });
+  const [endDate, setEndDate] = useState(new Date());
+
 
   if (!context) return null;
 
@@ -30,8 +38,12 @@ export default function LogsScreen() {
 
     const matchesHabit =
       selectedHabit === 'All' || habitName === selectedHabit;
+    
+    const matchesDate =
+      log.date >= startDate.toISOString().split('T')[0] &&
+      log.date <= endDate.toISOString().split('T')[0];
 
-    return matchesSearch && matchesHabit;
+    return matchesSearch && matchesHabit && matchesDate;
   });
 
   const habitOptions = ['All',...Array.from(
@@ -43,6 +55,8 @@ export default function LogsScreen() {
     )
   ).sort(),
 ];
+
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -60,6 +74,14 @@ export default function LogsScreen() {
           placeholder="Search by habit name or notes"
           style={styles.searchInput}
         />
+        <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
+        <View style={{ flex: 1 }}>
+          <DatePicker label="From" value={startDate} onChange={setStartDate} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <DatePicker label="To" value={endDate} onChange={setEndDate} />
+        </View>
+      </View>
         <View style={styles.filterRow}>
           {habitOptions.map((hab) => {
             const isSelected = selectedHabit === hab;

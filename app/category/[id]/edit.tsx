@@ -6,16 +6,18 @@ import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { Category, CategoryContext } from '../../_layout';
+import { AuthContext, Category, CategoryContext } from '../../_layout';
 
 export default function EditCategory() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const context = useContext(CategoryContext);
+  const auth = useContext(AuthContext);
 
-  if (!context) return null;
+  if (!context || auth?.currentUserId == null) return null;
 
   const { categories, setCategories } = context;
+  const userId = auth.currentUserId;
 
   const category = categories.find((c: Category) => c.id === Number(id));
   if (!category) return null;
@@ -29,7 +31,7 @@ export default function EditCategory() {
       .set({ name, colour, icon })
       .where(eq(categoriesTable.id, Number(id)));
 
-    const rows = await db.select().from(categoriesTable);
+    const rows = await db.select().from(categoriesTable).where(eq(categoriesTable.user_id, userId));
     setCategories(rows);
     router.back();
   };

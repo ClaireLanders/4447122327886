@@ -6,9 +6,13 @@ type Props = {
   onChangeText: (text: string) => void;
   placeholder?: string;
   keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  autoCorrect?: boolean;
+
 };
 
-export default function FormField({ label, value, onChangeText, placeholder, keyboardType }: Props) {
+export default function FormField({ label, value, onChangeText, placeholder, keyboardType, secureTextEntry, autoCapitalize, autoCorrect }: Props) {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.label}>{label}</Text>
@@ -18,6 +22,9 @@ export default function FormField({ label, value, onChangeText, placeholder, key
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+        autoCapitalize={autoCapitalize}
+        autoCorrect={autoCorrect}
         style={styles.input}
       />
     </View>

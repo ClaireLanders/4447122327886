@@ -1,3 +1,4 @@
+import { hashPassword } from '@/lib/auth';
 import { count } from 'drizzle-orm';
 import { db } from './client';
 import { categories, habit_logs, habits, targets, users } from './schema';
@@ -13,9 +14,13 @@ export async function seed() {
   console.log('Seeding database...');
 
   // --- Users ---
+
+const sarahHash = await hashPassword('password123');
+const mikeHash = await hashPassword('password123');
+
   await db.insert(users).values([
-    { username: 'sarah_j', password_hash: '$2b$10$placeholder_hash_sarah', created_at: '2025-03-01T10:00:00Z', fname: 'Sarah', lname: 'Johnson' },
-    { username: 'mike_r', password_hash: '$2b$10$placeholder_hash_mike', created_at: '2025-03-05T14:30:00Z', fname: 'Mike', lname: 'Rivera' },
+    { username: 'sarah_j', password_hash: sarahHash, created_at: '2025-03-01T10:00:00Z', fname: 'Sarah', lname: 'Johnson' },
+    { username: 'mike_r', password_hash: mikeHash, created_at: '2025-03-05T14:30:00Z', fname: 'Mike', lname: 'Rivera' },
   ]);
   const insertedUsers = await db.select().from(users);
 

@@ -131,7 +131,7 @@ export default function RootLayout() {
         <CategoryContext.Provider value={{ categories, setCategories}}>
           <HabitLogContext.Provider value={{ habitLogs, setHabitLogs}}>
             <TargetContext.Provider value={{ targets, setTargets }}>
-              <Stack />
+              <Stack screenOptions={{ headerShown: false}} />
             </TargetContext.Provider>
           </HabitLogContext.Provider>
         </CategoryContext.Provider>

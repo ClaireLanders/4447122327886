@@ -6,16 +6,18 @@ import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { Habit, HabitContext } from '../../_layout';
+import { AuthContext, Habit, HabitContext } from '../../_layout';
 
 export default function EditHabit() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const context = useContext(HabitContext);
+  const auth = useContext(AuthContext);
 
-  if (!context) return null;
+  if (!context || auth?.currentUserId == null) return null;
 
   const { habits, setHabits } = context;
+  const userId = auth.currentUserId;
 
   const habit = habits.find((h: Habit) => h.id === Number(id));
   if (!habit) return null;
@@ -23,22 +25,20 @@ export default function EditHabit() {
   const [name, setName] = useState(habit.name);
   const [notes, setNotes] = useState(habit.notes || '');
 
-  const saveChanges = async() => {
+  const saveChanges = async () => {
     await db.update(habitsTable)
-    .set({name, notes:notes || null})
-    .where(eq(habitsTable.id, Number(id)));
+      .set({ name, notes: notes || null })
+      .where(eq(habitsTable.id, Number(id)));
 
-    const rows = await db.select().from(habitsTable);
+    const rows = await db.select().from(habitsTable).where(eq(habitsTable.user_id, userId));
     setHabits(rows);
     router.back();
   };
 
-
   return (
     <View style={{ padding: 20 }}>
-      <FormField label="Habit Name" value={name} onChangeText={setName}/>
-      <FormField label="Habit Notes" value={notes} onChangeText={setNotes}/>
-
+      <FormField label="Habit Name" value={name} onChangeText={setName} />
+      <FormField label="Habit Notes" value={notes} onChangeText={setNotes} />
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>

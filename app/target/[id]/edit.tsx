@@ -6,16 +6,18 @@ import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { Target, TargetContext } from '../../_layout';
+import { AuthContext, Target, TargetContext } from '../../_layout';
 
 export default function EditTarget() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const context = useContext(TargetContext);
+  const auth = useContext(AuthContext);
 
-  if (!context) return null;
+  if (!context || auth?.currentUserId == null) return null;
 
   const { targets, setTargets } = context;
+  const userId = auth.currentUserId;
 
   const target = targets.find((t: Target) => t.id === Number(id));
   if (!target) return null;
@@ -28,15 +30,15 @@ export default function EditTarget() {
       .set({ period, goal: Number(goal) || 0 })
       .where(eq(targetsTable.id, Number(id)));
 
-    const rows = await db.select().from(targetsTable);
+    const rows = await db.select().from(targetsTable).where(eq(targetsTable.user_id, userId));
     setTargets(rows);
     router.back();
   };
 
   return (
     <View style={{ padding: 20 }}>
-      <FormField label="Period" value={period} onChangeText={setPeriod} placeholder="Period (weekly or monthly)"/>
-      <FormField label= "Goal" value={goal} onChangeText={setGoal} placeholder="Goal"keyboardType="numeric"/>
+      <FormField label="Period" value={period} onChangeText={setPeriod} placeholder="Period (weekly or monthly)" />
+      <FormField label="Goal" value={goal} onChangeText={setGoal} placeholder="Goal" keyboardType="numeric" />
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>

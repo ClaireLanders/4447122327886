@@ -20,7 +20,7 @@ export default function AddTarget() {
   const userId = auth.currentUserId;
 
   const [selectedHabitId, setSelectedHabitId] = useState<number | null>(habits[0]?.id ?? null);
-  const [period, setPeriod] = useState<'weekly' | 'monthly'>('weekly');
+  const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [goal, setGoal] = useState('');
 
   const saveTarget = async () => {
@@ -66,7 +66,7 @@ export default function AddTarget() {
 
       <Text style={styles.label}>Period</Text>
       <View style={styles.row}>
-        {(['weekly', 'monthly'] as const).map((p) => {
+        {(['daily', 'weekly', 'monthly'] as const).map((p) => {
           const isSelected = period === p;
           return (
             <Pressable

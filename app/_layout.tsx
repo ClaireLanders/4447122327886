@@ -131,7 +131,24 @@ export default function RootLayout() {
         <CategoryContext.Provider value={{ categories, setCategories}}>
           <HabitLogContext.Provider value={{ habitLogs, setHabitLogs}}>
             <TargetContext.Provider value={{ targets, setTargets }}>
-              <Stack screenOptions={{ headerShown: false}} />
+              <Stack screenOptions={{headerBackTitle: 'Back'}}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="register" options={{ headerShown: false }} />
+                <Stack.Screen name="profile" options={{ title: 'Profile' }} />
+                <Stack.Screen name="add_habit" options={{ title: 'Add Habit' }} />
+                <Stack.Screen name="add_category" options={{ title: 'Add Category' }} />
+                <Stack.Screen name="add_log" options={{ title: 'Log Habit' }} />
+                <Stack.Screen name="add_target" options={{ title: 'Add Target' }} />
+                <Stack.Screen name="habit/[id]" options={{ title: 'Habit Details' }} />
+                <Stack.Screen name="habit/[id]/edit" options={{ title: 'Edit Habit' }} />
+                <Stack.Screen name="category/[id]" options={{ title: 'Category Details' }} />
+                <Stack.Screen name="category/[id]/edit" options={{ title: 'Edit Category' }} />
+                <Stack.Screen name="log/[id]" options={{ title: 'Log Details' }} />
+                <Stack.Screen name="log/[id]/edit" options={{ title: 'Edit Log' }} />
+                <Stack.Screen name="target/[id]" options={{ title: 'Target Details' }} />
+                <Stack.Screen name="target/[id]/edit" options={{ title: 'Edit Target' }} />
+              </Stack>
             </TargetContext.Provider>
           </HabitLogContext.Provider>
         </CategoryContext.Provider>

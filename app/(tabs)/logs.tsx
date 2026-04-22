@@ -1,17 +1,20 @@
 import LogCard from '@/components/LogCard';
+import CategoryFilterPills from '@/components/ui/category-filter-pills';
 import DatePicker from '@/components/ui/date-picker';
 import PrimaryButton from '@/components/ui/primary-button';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Habit, HabitContext, HabitLog, HabitLogContext } from '../_layout';
+import { Category, CategoryContext, Habit, HabitContext, HabitLog, HabitLogContext } from '../_layout';
 
 export default function LogsScreen() {
   const router = useRouter();
   const context = useContext(HabitLogContext);
+  const habitContext = useContext(HabitContext);
+  const categoryContext = useContext(CategoryContext);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedHabit, setSelectedHabit] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [startDate, setStartDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() - 30);
@@ -19,44 +22,33 @@ export default function LogsScreen() {
   });
   const [endDate, setEndDate] = useState(new Date());
 
-
   if (!context) return null;
 
   const { habitLogs } = context;
-  const habitContext = useContext(HabitContext);
   const habits = habitContext?.habits || [];
+  const categories = categoryContext?.categories || [];
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
   const filteredLogs = habitLogs.filter((log: HabitLog) => {
-    const habitName = habits.find((h: Habit) => h.id === log.habit_id)?.name || '';
+    const habit = habits.find((h: Habit) => h.id === log.habit_id);
+    const habitName = habit?.name || '';
+    const categoryName = categories.find((c: Category) => c.id === habit?.category_id)?.name || '';
 
     const matchesSearch =
       normalizedQuery.length === 0 ||
       habitName.toLowerCase().includes(normalizedQuery) ||
       (log.notes && log.notes.toLowerCase().includes(normalizedQuery));
 
-    const matchesHabit =
-      selectedHabit === 'All' || habitName === selectedHabit;
-    
+    const matchesCategory =
+      selectedCategory === 'All' || categoryName === selectedCategory;
+
     const matchesDate =
       log.date >= startDate.toISOString().split('T')[0] &&
       log.date <= endDate.toISOString().split('T')[0];
 
-    return matchesSearch && matchesHabit && matchesDate;
+    return matchesSearch && matchesCategory && matchesDate;
   });
-
-  const habitOptions = ['All',...Array.from(
-    new Set(
-      habitLogs.map((log: HabitLog) => {
-        const habit = habits.find((h: Habit) => h.id === log.habit_id);
-        return habit?.name || 'Unknown';
-      })
-    )
-  ).sort(),
-];
-
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -75,45 +67,25 @@ export default function LogsScreen() {
           style={styles.searchInput}
         />
         <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-        <View style={{ flex: 1 }}>
-          <DatePicker label="From" value={startDate} onChange={setStartDate} />
+          <View style={{ flex: 1 }}>
+            <DatePicker label="From" value={startDate} onChange={setStartDate} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <DatePicker label="To" value={endDate} onChange={setEndDate} />
+          </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <DatePicker label="To" value={endDate} onChange={setEndDate} />
-        </View>
-      </View>
-        <View style={styles.filterRow}>
-          {habitOptions.map((hab) => {
-            const isSelected = selectedHabit === hab;
-            return (
-              <Pressable
-                key={hab}
-                accessibilityLabel={`Filter by habit ${hab}`}
-                accessibilityRole="button"
-                onPress={() => setSelectedHabit(hab)}
-                style={[
-                  styles.filterButton,
-                  isSelected && styles.filterButtonSelected,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.filterButtonText,
-                    isSelected && styles.filterButtonTextSelected,
-                  ]}
-                >
-                  {hab}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
+
+        <CategoryFilterPills
+          categories={categories}
+          selected={selectedCategory}
+          onSelect={setSelectedCategory}
+        />
 
         {filteredLogs.length === 0 ? (
           <Text style={{ marginTop: 20 }}>No logs yet.</Text>
         ) : (
           filteredLogs.map((log: HabitLog) => (
-            <LogCard key={log.id} log={log} />            
+            <LogCard key={log.id} log={log} />
           ))
         )}
       </ScrollView>
@@ -131,30 +103,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  filterRow: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  gap: 8,
-  marginTop: 10,
-},
-filterButton: {
-  backgroundColor: '#FFFFFF',
-  borderColor: '#94A3B8',
-  borderRadius: 999,
-  borderWidth: 1,
-  paddingHorizontal: 12,
-  paddingVertical: 8,
-},
-filterButtonSelected: {
-  backgroundColor: '#0F172A',
-  borderColor: '#0F172A',
-},
-filterButtonText: {
-  color: '#0F172A',
-  fontSize: 14,
-  fontWeight: '500',
-},
-filterButtonTextSelected: {
-  color: '#FFFFFF',
-},
 });

@@ -64,6 +64,7 @@ export default function LogsScreen() {
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Search by habit name or notes"
+          accessibilityLabel='Search logs'
           style={styles.searchInput}
         />
         <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>

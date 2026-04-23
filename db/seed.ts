@@ -29,11 +29,11 @@ const mikeHash = await hashPassword('password123');
 
   // --- Categories ---
   await db.insert(categories).values([
-    { user_id: sarahId, name: 'Health', colour: '#4CAF50', icon: 'heart-pulse' },
-    { user_id: sarahId, name: 'Fitness', colour: '#FF5722', icon: 'dumbbell' },
-    { user_id: sarahId, name: 'Mindfulness', colour: '#9C27B0', icon: 'brain' },
-    { user_id: mikeId, name: 'Productivity', colour: '#2196F3', icon: 'rocket' },
-    { user_id: mikeId, name: 'Wellness', colour: '#FF9800', icon: 'leaf' },
+    { user_id: sarahId, name: 'Health', colour: '#2A9DA8', icon: 'heart-pulse' },
+    { user_id: sarahId, name: 'Fitness', colour: '#E07B39', icon: 'dumbbell' },
+    { user_id: sarahId, name: 'Mindfulness', colour: '#8B5A9F', icon: 'brain' },
+    { user_id: mikeId, name: 'Productivity', colour: '#C06C84', icon: 'laptop' },
+    { user_id: mikeId, name: 'Wellness', colour: '#4A7C59', icon: 'sprout' },
   ]);
   const insertedCategories = await db.select().from(categories);
 

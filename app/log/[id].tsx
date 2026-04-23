@@ -4,8 +4,8 @@ import { habit_logs as habitLogsTable } from '@/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, Text, View } from 'react-native';
-import { AuthContext, Habit, HabitContext, HabitLog, HabitLogContext } from '../_layout';
+import { Text, View } from 'react-native';
+import { AuthContext, CategoryContext, Habit, HabitContext, HabitLog, HabitLogContext } from '../_layout';
 
 export default function LogDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,6 +13,7 @@ export default function LogDetail() {
   const context = useContext(HabitLogContext);
   const habitContext = useContext(HabitContext);
   const auth = useContext(AuthContext);
+  const categoryContext = useContext(CategoryContext);
 
   if (!context || !habitContext || auth?.currentUserId == null) return null;
 
@@ -22,6 +23,7 @@ export default function LogDetail() {
   const log = habitLogs.find((l: HabitLog) => l.id === Number(id));
   if (!log) return null;
 
+  
   const deleteLog = async () => {
     await db.delete(habitLogsTable).where(eq(habitLogsTable.id, Number(id)));
     const userHabitIds = habits.map((h: Habit) => h.id);
@@ -40,8 +42,9 @@ export default function LogDetail() {
       <Text>Count: {log.count}</Text>
       {log.notes && <Text>Notes: {log.notes}</Text>}
 
-      <Button
-        title="Edit"
+      <PrimaryButton
+        label="Edit"
+        variant="secondary"
         onPress={() =>
           router.push({ pathname: '../log/[id]/edit', params: { id } })
         }

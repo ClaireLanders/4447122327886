@@ -44,7 +44,7 @@ export default function AvatarButton() {
 const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
-    backgroundColor: '#0F766E',
+    backgroundColor: '#1E5F8A',
     borderRadius: 18,
     height: 36,
     justifyContent: 'center',

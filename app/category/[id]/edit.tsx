@@ -1,11 +1,13 @@
+import ColourPicker from '@/components/ui/colour-picker';
 import FormField from '@/components/ui/form-field';
+import IconPicker from '@/components/ui/icon-picker';
 import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AuthContext, Category, CategoryContext } from '../../_layout';
 
 export default function EditCategory() {
@@ -39,10 +41,24 @@ export default function EditCategory() {
   return (
     <View style={{ padding: 20 }}>
       <FormField label="Category Name" value={name} onChangeText={setName} placeholder="Name" />
-      <FormField label="Category Colour" value={colour} onChangeText={setColour} placeholder="Colour" />
-      <FormField label="Category Icon" value={icon} onChangeText={setIcon} placeholder="Icon" />
+
+      <Text style={styles.label}>Colour</Text>
+      <ColourPicker selected={colour} onSelect={setColour} />
+
+      <Text style={styles.label}>Icon</Text>
+      <IconPicker selected={icon} onSelect={setIcon} tintColour={colour} />
 
       <PrimaryButton label="Save Changes" variant="primary" onPress={saveChanges} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    color: '#334155',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 6,
+    marginTop: 8,
+  },
+});

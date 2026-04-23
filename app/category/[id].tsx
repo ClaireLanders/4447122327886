@@ -1,10 +1,11 @@
 import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AuthContext, Category, CategoryContext } from '../_layout';
 
 export default function CategoryDetail() {
@@ -29,19 +30,19 @@ export default function CategoryDetail() {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-        <View style={{
-          width: 24, height: 24, borderRadius: 12,
-          backgroundColor: category.colour, marginRight: 10
-        }} />
-        <Text style={{ fontSize: 22 }}>{category.name}</Text>
+    <View style={styles.container}>
+      <View style={styles.iconWrap}>
+        <MaterialCommunityIcons
+          name={category.icon as any}
+          size={72}
+          color={category.colour}
+        />
       </View>
-      <Text>Icon: {category.icon}</Text>
-      <Text>Colour: {category.colour}</Text>
+      <Text style={styles.name}>{category.name}</Text>
 
-      <Button
-        title="Edit"
+      <PrimaryButton
+        label="Edit"
+        variant="secondary"
         onPress={() =>
           router.push({
             pathname: '../category/[id]/edit',
@@ -54,3 +55,19 @@ export default function CategoryDetail() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
+  iconWrap: {
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  name: {
+    fontSize: 22,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+});

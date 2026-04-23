@@ -25,7 +25,7 @@ export default function IndexScreen() {
 
  
   const filteredHabits = habits.filter((habit: Habit) => {
-    // Text search, if text entered matches habit name or notes
+    // Text search for if text entered matches habit name or notes
     const matchesSearch =
       normalizedQuery.length === 0 ||
       habit.name.toLowerCase().includes(normalizedQuery) ||
@@ -59,6 +59,7 @@ export default function IndexScreen() {
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Search by name or notes"
+          accessibilityLabel='Search habits'
           style={styles.searchInput}
         />
         <CategoryFilterPills

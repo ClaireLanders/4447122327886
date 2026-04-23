@@ -4,7 +4,7 @@ import { targets as targetsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { AuthContext, Habit, HabitContext, HabitLog, HabitLogContext, Target, TargetContext } from '../_layout';
 
 export default function TargetDetail() {
@@ -75,8 +75,9 @@ export default function TargetDetail() {
           : met ? `Target met!`
             : `${remaining} remaining`}
       </Text>
-      <Button
-        title="Edit"
+      <PrimaryButton
+        label="Edit"
+        variant="secondary"
         onPress={() =>
           router.push({ pathname: '../target/[id]/edit', params: { id } })
         }

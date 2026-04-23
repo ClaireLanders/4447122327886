@@ -19,7 +19,7 @@ export default function FilterPills({
   selected,
   onSelect,
   accessibilityLabelPrefix = 'Filter',
-  fallbackColour = '#94A3B8',
+  fallbackColour = '#1E5F8A',
 }: Props) {
   return (
     <ScrollView

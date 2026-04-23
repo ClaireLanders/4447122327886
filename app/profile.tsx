@@ -4,11 +4,14 @@ import { db } from '@/db/client';
 import { categories as categoriesTable, habit_logs as habitLogsTable, habits as habitsTable, targets as targetsTable, users } from '@/db/schema';
 import { clearSession } from '@/lib/auth';
 import { exportUserDataToCSV } from '@/lib/csvExport';
+import { cancelExistingReminder, getReminderSettings, scheduleDailyReminder } from '@/lib/notifications';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { eq, inArray } from 'drizzle-orm';
 import { useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 type UserInfo = {
   username: string;
@@ -25,6 +28,10 @@ export default function ProfileScreen() {
   const logContext = useContext(HabitLogContext);
   const targetContext = useContext(TargetContext);
   const [user, setUser] = useState<UserInfo | null>(null);
+  const [reminderEnabled, setReminderEnabled] = useState(false);
+  const [reminderTime, setReminderTime] = useState(new Date());
+
+
 
   useEffect(() => {
     const loadUser = async () => {
@@ -42,6 +49,17 @@ export default function ProfileScreen() {
     void loadUser();
   }, [auth?.currentUserId]);
 
+  useEffect(() => {
+  const loadReminder = async () => {
+    const { enabled, hour, minute } = await getReminderSettings();
+    setReminderEnabled(enabled);
+    const d = new Date();
+    d.setHours(hour, minute, 0, 0);
+    setReminderTime(d);
+  };
+  void loadReminder();
+}, []);
+
   const handleExport = async () => {
     if (auth?.currentUserId == null) return;
     try {
@@ -55,7 +73,7 @@ export default function ProfileScreen() {
     await clearSession();
     auth?.setCurrentUserId(null);
   };
-
+  
   const handleDelete = () => {
     Alert.alert(
       'Delete profile',
@@ -87,6 +105,26 @@ export default function ProfileScreen() {
       ]
     );
   };
+  const handleReminderToggle = async (enabled: boolean) => {
+  setReminderEnabled(enabled);
+  if (enabled) {
+    const id = await scheduleDailyReminder(reminderTime.getHours(), reminderTime.getMinutes());
+    if (!id) {
+      setReminderEnabled(false);
+      Alert.alert('Permission required', 'Notifications permission was not granted.');
+    }
+  } else {
+    await cancelExistingReminder();
+  }
+};
+
+const handleTimeChange = async (_event: unknown, date?: Date) => {
+  if (!date) return;
+  setReminderTime(date);
+  if (reminderEnabled) {
+    await scheduleDailyReminder(date.getHours(), date.getMinutes());
+  }
+};
 
   if (!user) {
     return (
@@ -115,6 +153,24 @@ export default function ProfileScreen() {
           <Text style={styles.label}>Member since</Text>
           <Text style={styles.value}>{user.created_at.split('T')[0]}</Text>
         </View>
+        <View style={styles.infoBlock}>
+          <Text style={styles.label}>Daily reminder</Text>
+          <View style={styles.reminderRow}>
+            <Text style={styles.value}>{reminderEnabled ? 'On' : 'Off'}</Text>
+            <Switch value={reminderEnabled} onValueChange={handleReminderToggle} />
+          </View>
+          {reminderEnabled && (
+            <View style={styles.reminderTimeRow}>
+              <Text style={styles.label}>Reminder time</Text>
+              <DateTimePicker
+                mode="time"
+                display={Platform.OS === 'ios' ? 'compact' : 'default'}
+                value={reminderTime}
+                onChange={handleTimeChange}
+              />
+            </View>
+          )}
+        </View>
         
         <View style={styles.buttonRow}>
           <PrimaryButton label="Export data (CSV)" onPress={handleExport} variant="secondary" />
@@ -132,7 +188,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#F5EFE6',
     flex: 1,
   },
   container: {
@@ -161,4 +217,15 @@ const styles = StyleSheet.create({
   buttonRow: {
     marginTop: 12,
   },
+  reminderRow: {
+  alignItems: 'center',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+reminderTimeRow: {
+  alignItems: 'center',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginTop: 8,
+},
 });

@@ -3,6 +3,7 @@ import { categories as categoriesTable, habit_logs as habitLogsTable, habits as 
 import { seed } from '@/db/seed';
 import { loadSession } from '@/lib/auth';
 import { eq, inArray } from 'drizzle-orm';
+import * as Notifications from 'expo-notifications';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { createContext, useEffect, useState } from 'react';
 
@@ -70,6 +71,16 @@ export const CategoryContext = createContext<CategoryContextType | null>(null);
 export const HabitLogContext = createContext<HabitLogContextType | null>(null);
 export const TargetContext = createContext<TargetContextType | null>(null);
 export const AuthContext = createContext<AuthContextType | null>(null);
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function RootLayout() {
   const [habits, setHabits] = useState<Habit[]>([]);

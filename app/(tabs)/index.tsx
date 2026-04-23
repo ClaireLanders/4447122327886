@@ -81,7 +81,7 @@ export default function IndexScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#F5EFE6',
     flex: 1,
     paddingHorizontal: 18,
     paddingTop: 10,

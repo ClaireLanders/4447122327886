@@ -3,6 +3,7 @@ import PrimaryButton from '@/components/ui/primary-button';
 import { db } from '@/db/client';
 import { categories as categoriesTable, habit_logs as habitLogsTable, habits as habitsTable, targets as targetsTable, users } from '@/db/schema';
 import { clearSession } from '@/lib/auth';
+import { exportUserDataToCSV } from '@/lib/csvExport';
 import { eq, inArray } from 'drizzle-orm';
 import { useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
@@ -40,6 +41,15 @@ export default function ProfileScreen() {
     };
     void loadUser();
   }, [auth?.currentUserId]);
+
+  const handleExport = async () => {
+    if (auth?.currentUserId == null) return;
+    try {
+      await exportUserDataToCSV(auth.currentUserId);
+    } catch (err) {
+      Alert.alert('Export failed', err instanceof Error ? err.message : 'An unexpected error occurred');
+    }
+  };
 
   const handleLogout = async () => {
     await clearSession();
@@ -105,7 +115,10 @@ export default function ProfileScreen() {
           <Text style={styles.label}>Member since</Text>
           <Text style={styles.value}>{user.created_at.split('T')[0]}</Text>
         </View>
-
+        
+        <View style={styles.buttonRow}>
+          <PrimaryButton label="Export data (CSV)" onPress={handleExport} variant="secondary" />
+        </View>
         <View style={styles.buttonRow}>
           <PrimaryButton label="Log out" onPress={handleLogout} variant="secondary" />
         </View>

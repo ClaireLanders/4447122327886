@@ -5,7 +5,7 @@ Claire Landersr 122327886
 
 ## Deliverabes
 
-- **GitHub Repository:** [INSERT GITHUB URL]
+- **GitHub Repository:** [[INSERT GITHUB URL]](https://github.com/ClaireLanders/4447122327886.git)
 - **Expo Project Dashboard:** https://expo.dev/accounts/clanders/projects/4447122327886
 - **Expo Update — iOS QR:** see Expo dashboard above
 - **Expo Update — Android QR:** see Expo dashboard above

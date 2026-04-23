@@ -11,6 +11,7 @@ type Props = {
   selected: string;
   onSelect: (value: string) => void;
   accessibilityLabelPrefix?: string;
+  fallbackColour?: string;
 };
 
 export default function FilterPills({
@@ -18,6 +19,7 @@ export default function FilterPills({
   selected,
   onSelect,
   accessibilityLabelPrefix = 'Filter',
+  fallbackColour = '#94A3B8',
 }: Props) {
   return (
     <ScrollView
@@ -28,7 +30,7 @@ export default function FilterPills({
     >
       {options.map((option) => {
         const isSelected = selected === option.value;
-        const borderColour = option.colour ?? '#94A3B8';
+        const borderColour = option.colour ?? fallbackColour;
         return (
           <Pressable
             key={option.value}

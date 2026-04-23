@@ -23,6 +23,7 @@ export default function LogDetail() {
   const log = habitLogs.find((l: HabitLog) => l.id === Number(id));
   if (!log) return null;
 
+  const habitName = habits.find((h: Habit) => h.id === log.habit_id)?.name;
   
   const deleteLog = async () => {
     await db.delete(habitLogsTable).where(eq(habitLogsTable.id, Number(id)));
@@ -37,7 +38,7 @@ export default function LogDetail() {
   return (
     <View style={{ padding: 20 }}>
       <Text style={{ fontSize: 22 }}>Habit Log</Text>
-      <Text>Habit ID: {log.habit_id}</Text>
+      <Text>Habit: {habitName}</Text>
       <Text>Date: {log.date}</Text>
       <Text>Count: {log.count}</Text>
       {log.notes && <Text>Notes: {log.notes}</Text>}

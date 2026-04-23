@@ -32,7 +32,7 @@ export default function TargetDetail() {
   let startDate = todayStr;
   if (target.period === 'daily') {
     startDate = todayStr;
-  }else if (target.period == 'weekly'){
+  }else if (target.period === 'weekly'){
     const d = new Date(today);
     const day = d.getDay();
     const diff = day === 0 ? 6 : day - 1;

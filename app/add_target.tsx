@@ -1,11 +1,12 @@
 import FormField from '@/components/ui/form-field';
+import HabitSelector from '@/components/ui/habit-selector';
 import { db } from '@/db/client';
 import { targets as targetsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { AuthContext, Habit, HabitContext, TargetContext } from './_layout';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AuthContext, HabitContext, TargetContext } from './_layout';
 
 export default function AddTarget() {
   const router = useRouter();
@@ -41,24 +42,11 @@ export default function AddTarget() {
   return (
     <View style={{ padding: 20 }}>
       <Text style={styles.label}>Habit</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.row}>
-        {habits.map((habit: Habit) => {
-          const isSelected = selectedHabitId === habit.id;
-          return (
-            <Pressable
-              key={habit.id}
-              accessibilityLabel={`Select habit ${habit.name}`}
-              accessibilityRole="button"
-              onPress={() => setSelectedHabitId(habit.id)}
-              style={[styles.chip, isSelected && styles.chipSelected]}
-            >
-              <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>
-                {habit.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
+        <HabitSelector
+          habits={habits}
+          selectedId={selectedHabitId}
+          onSelect={setSelectedHabitId}
+        />
 
       {habits.length === 0 && (
         <Text style={styles.hint}>You have no habits yet. Add one before creating a target.</Text>
@@ -115,8 +103,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   chipSelected: {
-    backgroundColor: '#0F766E',
-    borderColor: '#0F766E',
+    backgroundColor: '#1E5F8A',
+    borderColor: '#1E5F8A',
   },
   chipText: {
     color: '#0F172A',

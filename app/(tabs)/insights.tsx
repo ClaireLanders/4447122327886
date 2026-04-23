@@ -1,7 +1,8 @@
 import ProgressBarChart from '@/components/ui/bar-chart';
+import FilterPills from '@/components/ui/filter-pills';
 import CategoryPieChart from '@/components/ui/pie-chart';
 import { useContext, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Category, CategoryContext, Habit, HabitContext, HabitLog, HabitLogContext, Target, TargetContext } from '../_layout';
 
@@ -86,32 +87,17 @@ export default function InsightsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Insights</Text>
-        <View style={styles.filterRow}>
-                {['daily', 'weekly', 'monthly'].map((p) => {
-            const isSelected = period === p;
-            return (
-            <Pressable
-                key={p}
-                accessibilityLabel={`View ${p} insights`}
-                accessibilityRole="button"
-                onPress={() => setPeriod(p)}
-                style={[
-                styles.filterButton,
-                isSelected && styles.filterButtonSelected,
-                ]}
-            >
-                <Text
-                style={[
-                    styles.filterButtonText,
-                    isSelected && styles.filterButtonTextSelected,
-                ]}
-                >
-                {p.charAt(0).toUpperCase() + p.slice(1)}
-                </Text>
-            </Pressable>
-            );
-        })}
-        </View>       
+          <FilterPills
+          options={[
+            { value: 'daily', label: 'Daily' },
+            { value: 'weekly', label: 'Weekly' },
+            { value: 'monthly', label: 'Monthly' },
+          ]}
+          selected={period}
+          onSelect={setPeriod}
+          accessibilityLabelPrefix="View insights for"
+          fallbackColour='#1E5F8A'
+        /> 
         <Text style={styles.sectionTitle}>Progress VS Goals</Text>
         <ProgressBarChart data={categoryProgress} />
         <Text style={styles.sectionTitle}>Category distribution</Text>
@@ -140,33 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 16,
   },
-  filterRow: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  gap: 8,
-  marginTop: 10,
-  marginBottom: 16,
-},
-filterButton: {
-  backgroundColor: '#FFFFFF',
-  borderColor: '#94A3B8',
-  borderRadius: 999,
-  borderWidth: 1,
-  paddingHorizontal: 12,
-  paddingVertical: 8,
-},
-filterButtonSelected: {
-  backgroundColor: '#0F172A',
-  borderColor: '#0F172A',
-},
-filterButtonText: {
-  color: '#0F172A',
-  fontSize: 14,
-  fontWeight: '500',
-},
-filterButtonTextSelected: {
-  color: '#FFFFFF',
-},
+
 sectionTitle: {
   fontSize: 18,
   fontWeight: '600',

@@ -45,7 +45,7 @@ export default function TargetCard({ target }: Props) {
   const percentage = target.goal > 0 ? Math.round((progress / target.goal) * 100) : 0;
   const barWidth = Math.min(percentage, 100);
 
-  const barColour = exceeded ? '#DAA520' : met ? '#16A34A' : '#0F766E';
+  const barColour = exceeded ? '#DAA520' : met ? '#16A34A' : '#1E5F8A';
   const statusText = exceeded
     ? `Exceeded by ${progress - target.goal}`
     : met

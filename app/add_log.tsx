@@ -1,10 +1,11 @@
 import FormField from '@/components/ui/form-field';
+import HabitSelector from '@/components/ui/habit-selector';
 import { db } from '@/db/client';
 import { habit_logs as habitLogsTable } from '@/db/schema';
 import { inArray } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Button, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { AuthContext, Habit, HabitContext, HabitLogContext } from './_layout';
 
 export default function AddLog() {
@@ -48,25 +49,11 @@ export default function AddLog() {
   return (
     <View style={{ padding: 20 }}>
       <Text style={styles.label}>Habit</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.habitRow}>
-        {habits.map((habit: Habit) => {
-          const isSelected = selectedHabitId === habit.id;
-          return (
-            <Pressable
-              key={habit.id}
-              accessibilityLabel={`Select habit ${habit.name}`}
-              accessibilityRole="button"
-              onPress={() => setSelectedHabitId(habit.id)}
-              style={[styles.habitChip, isSelected && styles.habitChipSelected]}
-            >
-              <Text style={[styles.habitText, isSelected && styles.habitTextSelected]}>
-                {habit.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
-
+        <HabitSelector
+          habits={habits}
+          selectedId={selectedHabitId}
+          onSelect={setSelectedHabitId}
+        />
       {habits.length === 0 && (
         <Text style={styles.hint}>You have no habits yet. Add one before logging.</Text>
       )}
@@ -86,31 +73,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 6,
   },
-  habitRow: {
-    flexDirection: 'row',
-    marginBottom: 12,
-  },
-  habitChip: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#CBD5E1',
-    borderRadius: 999,
-    borderWidth: 2,
-    marginRight: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-  },
-  habitChipSelected: {
-    backgroundColor: '#0F766E',
-    borderColor: '#0F766E',
-  },
-  habitText: {
-    color: '#0F172A',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  habitTextSelected: {
-    color: '#FFFFFF',
-  },
+ 
   hint: {
     color: '#DC2626',
     fontSize: 13,

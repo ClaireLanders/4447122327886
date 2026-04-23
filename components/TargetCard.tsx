@@ -1,4 +1,6 @@
 import { Habit, HabitContext, HabitLog, HabitLogContext, Target } from '@/app/_layout';
+import { calculateStreak } from '@/lib/streaks';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -44,6 +46,7 @@ export default function TargetCard({ target }: Props) {
   const exceeded = progress > target.goal;
   const percentage = target.goal > 0 ? Math.round((progress / target.goal) * 100) : 0;
   const barWidth = Math.min(percentage, 100);
+  const streak = calculateStreak(target, logContext?.habitLogs ?? []);
 
   const barColour = exceeded ? '#DAA520' : met ? '#16A34A' : '#1E5F8A';
   const statusText = exceeded
@@ -59,7 +62,7 @@ export default function TargetCard({ target }: Props) {
       params: { id: target.id.toString() }
     });
 
-  const targetSummary = `${habitName} target, ${target.period}, ${percentage}% complete`;
+  const targetSummary = `${habitName} target, ${target.period}, ${percentage}% complete${streak > 0 ? `, ${streak} ${target.period === 'daily' ? 'day' : target.period === 'weekly' ? 'week' : 'month'} streak` : ''}`;
 
   return (
     <Pressable
@@ -86,6 +89,19 @@ export default function TargetCard({ target }: Props) {
       </View>
 
       <Text style={[styles.status, { color: statusColour }]}>{statusText}</Text>
+      {streak > 0 && (
+        <View style={styles.streakRow}>
+          <MaterialCommunityIcons
+            name="fire"
+            size={16}
+            color="#E07B39"
+            style={styles.streakIcon}
+          />
+          <Text style={styles.streakText}>
+            {streak} {target.period === 'daily' ? (streak === 1 ? 'day' : 'days') : target.period === 'weekly' ? (streak === 1 ? 'week' : 'weeks') : (streak === 1 ? 'month' : 'months')} streak
+          </Text>
+        </View>
+      )}
     </Pressable>
   );
 }
@@ -144,4 +160,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 8,
   },
+  streakRow: {
+  alignItems: 'center',
+  flexDirection: 'row',
+  marginTop: 6,
+},
+streakIcon: {
+  marginRight: 4,
+},
+streakText: {
+  color: '#E07B39',
+  fontSize: 13,
+  fontWeight: '600',
+},
 });
